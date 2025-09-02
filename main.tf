@@ -168,3 +168,50 @@ module "application_asg" {
     http_put_response_hop_limit = 1
   }
 }
+
+# ALB setup
+#reference https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/latest
+module "alb" {
+  source = "terraform-aws-modules/alb/aws"
+
+  name                       = "application-alb"
+  vpc_id                     = module.vpc.vpc_id
+  subnets                    = slice(module.vpc.public_subnets, 1, 3)
+  enable_deletion_protection = false
+
+  # Security Group
+  security_group_ingress_rules = {
+    all_http = {
+      from_port   = 80
+      to_port     = 80
+      ip_protocol = "tcp"
+      description = "HTTP web traffic"
+      cidr_ipv4   = "0.0.0.0/0"
+    }
+  }
+  security_group_egress_rules = {
+    all = {
+      ip_protocol = "-1"
+      cidr_ipv4   = "10.1.0.0/16"
+    }
+  }
+
+  listeners = {
+    http_alb_listener = {
+      port     = 80
+      protocol = "HTTP"
+      forward = {
+        target_group_key = "application_alb_target"
+      }
+    }
+  }
+
+  target_groups = {
+    application_alb_target = {
+      protocol    = "HTTP"
+      port        = 80
+      target-type = "alb"
+      target_id   = module.application_asg.autoscaling_group_arn
+    }
+  }
+}
