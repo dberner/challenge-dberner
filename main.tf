@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-east-2"
 }
 
+
 # pull ubuntu ami id from AWS provider rather than hard-coding
 # reference https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-create
 data "aws_ami" "ubuntu" {
@@ -15,6 +16,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+
 # Create VPC and network basics
 # reference https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
 
@@ -26,7 +28,7 @@ module "vpc" {
 
   azs             = ["us-east-2a", "us-east-2b"]
   private_subnets = ["10.1.20.0/24", "10.1.21.0/24"]
-  public_subnets  = ["10.1.0.0/24"]
+  public_subnets  = ["10.1.0.0/24", "10.1.80.0/24", "10.1.81.0/24"]
 
   enable_nat_gateway = true
   enable_vpn_gateway = true
@@ -39,6 +41,7 @@ module "vpc" {
   manage_default_vpc = true
   default_vpc_name   = "dberner-challenge-vpc"
 }
+
 
 # security group for the management subnet
 # reference https://github.com/terraform-aws-modules/terraform-aws-security-group
@@ -70,6 +73,21 @@ module "bastion_ec2_instance" {
 }
 
 
+# security groups for the app servers
+# reference https://github.com/terraform-aws-modules/terraform-aws-security-group
+module "application-ssh-sg" {
+  source = "terraform-aws-modules/security-group/aws//modules/ssh"
+
+  name        = "application-sg"
+  description = "ssh access from the management netowrk to the app servers"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_cidr_blocks = [element(module.vpc.public_subnets, 0)] # the management network
+  ingress_rules       = ["ssh-tcp"]
+}
+
+# Create ASG for the app servers
+# reference https://registry.terraform.io/modules/terraform-aws-modules/autoscaling/aws/latest
 module "application_asg" {
   source = "terraform-aws-modules/autoscaling/aws"
 
@@ -81,6 +99,7 @@ module "application_asg" {
   health_check_type         = "EC2"
   vpc_zone_identifier       = module.vpc.private_subnets
   key_name                  = "dberner-coalfire-sre-challenge-key"
+  security_groups           = ["application-sg"]
 
   initial_lifecycle_hooks = [
     {
@@ -139,3 +158,4 @@ module "application_asg" {
     http_put_response_hop_limit = 1
   }
 }
+
