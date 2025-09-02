@@ -79,11 +79,21 @@ module "application-ssh-sg" {
   source = "terraform-aws-modules/security-group/aws//modules/ssh"
 
   name        = "application-ssh-sg"
-  description = "ssh access from the management netowrk to the app servers"
+  description = "ssh access from the management network to the app servers"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_cidr_blocks = [element(module.vpc.public_subnets_cidr_blocks, 0)] # the management network
+  ingress_cidr_blocks = [element(module.vpc.public_subnets_cidr_blocks, 0)] # the management network, 0.0
   ingress_rules       = ["ssh-tcp"]
+}
+
+module "application-http-sg" {
+  source = "terraform-aws-modules/security-group/aws//modules/http-80"
+
+  name        = "application-http-sg"
+  description = "http access from the ALB networks to the app servers"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_cidr_blocks = slice(module.vpc.public_subnets_cidr_blocks, 1, 3) # the public http networks, 80.0 & 81.0
 }
 
 # Create ASG for the app servers
@@ -99,7 +109,7 @@ module "application_asg" {
   health_check_type         = "EC2"
   vpc_zone_identifier       = module.vpc.private_subnets
   key_name                  = "dberner-coalfire-sre-challenge-key"
-  security_groups           = [module.application-ssh-sg.security_group_id]
+  security_groups           = [module.application-ssh-sg.security_group_id, module.application-http-sg.security_group_id]
 
   initial_lifecycle_hooks = [
     {
