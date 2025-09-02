@@ -78,11 +78,11 @@ module "bastion_ec2_instance" {
 module "application-ssh-sg" {
   source = "terraform-aws-modules/security-group/aws//modules/ssh"
 
-  name        = "application-sg"
+  name        = "application-ssh-sg"
   description = "ssh access from the management netowrk to the app servers"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_cidr_blocks = [element(module.vpc.public_subnets, 0)] # the management network
+  ingress_cidr_blocks = [element(module.vpc.public_subnets_cidr_blocks, 0)] # the management network
   ingress_rules       = ["ssh-tcp"]
 }
 
@@ -99,7 +99,7 @@ module "application_asg" {
   health_check_type         = "EC2"
   vpc_zone_identifier       = module.vpc.private_subnets
   key_name                  = "dberner-coalfire-sre-challenge-key"
-  security_groups           = ["application-sg"]
+  security_groups           = [module.application-ssh-sg.security_group_id]
 
   initial_lifecycle_hooks = [
     {
@@ -158,4 +158,3 @@ module "application_asg" {
     http_put_response_hop_limit = 1
   }
 }
-
