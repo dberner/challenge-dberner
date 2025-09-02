@@ -4,7 +4,8 @@ provider "aws" {
 
 locals {
   user_data = <<-EOF
-    #!/usr/bin/env bash
+    #!/bin/bash
+    touch /tmp/user_data_ran
     sudo apt install -y apache2
   EOF
 }
