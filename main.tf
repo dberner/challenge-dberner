@@ -27,6 +27,8 @@ module "vpc" {
   default_vpc_name   = "dberner-challenge-vpc"
 }
 
+# security group for the management subnet
+# reference https://github.com/terraform-aws-modules/terraform-aws-security-group
 module "management-sg" {
   source = "terraform-aws-modules/security-group/aws//modules/ssh"
 
@@ -38,6 +40,8 @@ module "management-sg" {
   ingress_rules       = ["ssh-tcp"]
 }
 
+# pull ubuntu ami id from AWS provider rather than hard-coding
+# reference https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-create
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -49,6 +53,8 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+# Create instance running in the management network "bastion"
+# reference https://github.com/terraform-aws-modules/terraform-aws-ec2-instance
 module "bastion_ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
