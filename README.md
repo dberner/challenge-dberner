@@ -67,11 +67,11 @@ I've commented out the ALB code in the current main.tf. It was previously runnin
 
 ### terraform-aws-modules
 These are the modules I used:
-- [vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
-- [security-group](https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/latest)
-- [ec2-instance](https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest)
-- [autoscaling](https://registry.terraform.io/modules/terraform-aws-modules/autoscaling/aws/latest)
-- [alb](https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/latest)
+  - [vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
+  - [security-group](https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/latest)
+  - [ec2-instance](https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest)
+  - [autoscaling](https://registry.terraform.io/modules/terraform-aws-modules/autoscaling/aws/latest)
+  - [alb](https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/latest)
 
 Code examples:
 - [ASG examples the autoscaling module](https://github.com/terraform-aws-modules/terraform-aws-autoscaling/tree/master/examples/complete)
