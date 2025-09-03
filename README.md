@@ -15,7 +15,7 @@ The diagram presents a single VPC spanning 2 Availability Zones. Each AZ hosts p
 - An AWS account 
 - A workstation configured with Terraform & appropriate credentials to deploy to AWS
 
-Consult the appropriate documentation from [Amazon](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html) and [Hashicorp](https://developer.hashicorp.com/terraform/tutorials/aws-get-started) for setup instructions.
+Consult the appropriate documentation from [Amazon](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html) and [Hashicorp](https://developer.hashicorp.com/terraform/tutorials/aws-get-started) (respectively) for setup instructions.
 
 ## Deployment instructions
 
@@ -55,7 +55,7 @@ Once a basic site was deployed I'd planned to install a simple app and then prov
 
 ## Improvement plan
 
-In priority order.  Dynamic autoscaling is a nice-to-have and not strictly necessary.
+In priority order. The custom AMI and dynamic autoscaling are nice-to-have and not strictly necessary.
 
 ### 1. Finish the basic site
 The first step in improvement would be to get the site working as planned. Finish the ALB deployment and configuration, get Apache installed and running on the Application instances.
@@ -69,14 +69,17 @@ Set up Cloudwatch logging, metrics, and alerting or deploy nagios or similar too
 ### 4. DNS, and SSL/TLS
 Set up a DNS name for the site. Once the site has a name, we can create SSL/TLS certificates and enable HTTPS on the ALB.
 
-### 5. Dynamic Autoscaling
+### 5. A custom AMI for the app servers
+Simplify app deployment by generating a custom AMI with the application and configuration pre-installed.
+
+### 6. Dynamic Autoscaling
 The ASG is not set up to respond to traffic needs at this point. Set up dynamic autoscaling.
 
 ## General Notes
 
 Approaching this challenge, my first task was to get a development environment set up for the project. I created a distrobox to provide a clean workspace on my system, installed basic tools into it, created an AWS account, installed the AWS CLI, set up my AWS credentials, installed Terraform, created a ssh key for pushing to github, and made sure everything was working correctly. All subsequent work was done in the distrobox environment.
 
-To begin the actual work, I looked at Coalfire's AWS Terraform modules. I started writing code with these, but eventually realized I wouldn't be able to understand them well enough to fully implement the project in the time available for the challenge. (This code is available in the `coalfire-terraform-attempt` subdirectory.)
+To begin the actual work, I looked at Coalfire's AWS Terraform modules. I started writing code with these, but eventually realized I wouldn't be able to understand them well enough to fully implement the project in the time available for the challenge. (This code is available in the [coalfire-terraform-attempt](./coalfire-terraform-attempt/) subdirectory.)
 
 The top Google search result for AWS Terraform modules is [Terraform AWS Modules](https://registry.terraform.io/namespaces/terraform-aws-modules), this seemed to me a reasonably strong endorsement. These modules have comprehensible example code and looked like they would work for my initial implementation plan - there are modules for handling VPC, Security Groups, EC2 Instances, ASG, and ALB.
 
@@ -91,6 +94,14 @@ Given more time I'd work on implementing the ALB via Hashicorp's AWS provider re
 It seems like ASGs are not well supported by this module author, as my next step was to install apache on the ASG instances. I'd thought this would be a simple matter of passing a bash script to the instances, but I found the `user_data` input in the ASG module configuration doesn't seem run the provided bash script on the instances. Again, given more time I'd approach this by writing with Hashicorp's provider resources rather than the abstractions provided by the chosen modules.
 
 I've commented out the ALB code in the current main.tf. It was previously running but I wanted to leave the target group code in place for future experimentation.
+
+## Deployment logs and screenshots
+The [deployment-evidence](./deployment-evidence/) subdirectory contains screenshots of the AWS console showing
+- the VPC and subnets 
+- the running EC2 instances
+- details of the ASG
+
+There is also a log of the terraform apply process with a demonstration of connecting to the bastion EC2 instance via SSH.
 
 # References
 
