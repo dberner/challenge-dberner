@@ -32,7 +32,7 @@ Example output:
 📦 dberner@coalfire :) [main] challenge-dberner]$ 
 ```
 
-4. ssh to the instance using the path to the key file and the hostname
+2. ssh to the instance using the path to the key file and the hostname
 ```
 ssh -i <path_to_ssh_key> ubuntu@<public_dns_name>
 ```
@@ -56,11 +56,10 @@ Example output:
 ```
 2. Log in to the bastion (see above)
 3. Copy the ssh private key to the ~/.ssh/ directory of the bastion
-  - name the file `id_rsa`
-4. Change the permissions of the ~/.ssh/<path_to_private_ssh_key> to 600
-`chmod 600 ~/.ssh/id_rsa`
-5. ssh to the instance
-`ssh ubuntu@<ip_address_of_desired_instance>`
+    - name the file `id_rsa`
+4. Change the permissions of the ~/.ssh/<path_to_private_ssh_key> to `600`: `chmod 600 ~/.ssh/id_rsa`
+5. ssh to the instance: `ssh ubuntu@<ip_address_of_desired_instance>`
+
 ## Service outages
 
 As currently configured, there's no unique data to save or restore. Reapply the terraform code to redeploy the site in the event of any issues. (See the deployment section above or in the README.md)
