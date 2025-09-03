@@ -5,11 +5,11 @@
 
 The diagram below represents the site as initially planned. Unfortunately, the Terraform code doesn't currently apply, so the diagrammed ALB is not currently deployable.
 
-!(challenge-diagram.png)
+![](challenge-diagram.png)
 
 ## Discussion
 
-To start I looked at Coalfire's aws terraform modules, I started writing code with these but quickly realized I wouldn't be able to understand them enough to fully implement in the time available.
+First, I looked at Coalfire's AWS Terraform modules, I started writing code with these but quickly realized I wouldn't be able to understand them enough to fully implement in the time available for the challenge.
 
 The top Google search result for AWS Terraform modules is [Terraform AWS Modules](https://registry.terraform.io/namespaces/terraform-aws-modules), this seemed to be a strong endorsement. These modules have reasonably comprehensible example code and looked like they'd work for my my implementation plan: modules handling VPC, Security Groups, EC2 Instances, ASG, and ALB.
 
