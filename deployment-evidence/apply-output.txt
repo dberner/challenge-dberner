@@ -1,0 +1,76 @@
+📦 dberner@coalfire :) [main] challenge-dberner]$ terraform apply
+module.application_asg.data.aws_partition.current: Reading...
+module.bastion_ec2_instance.data.aws_partition.current: Reading...
+data.aws_ami.ubuntu: Reading...
+module.vpc.aws_default_vpc.this[0]: Refreshing state... [id=vpc-0375f3edfa2d6a034]
+module.vpc.aws_vpc.this[0]: Refreshing state... [id=vpc-05967c54d0c82f839]
+module.application_asg.data.aws_partition.current: Read complete after 0s [id=aws]
+module.bastion_ec2_instance.data.aws_partition.current: Read complete after 0s [id=aws]
+module.application_asg.data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+module.application_asg.data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=1256122602]
+module.application_asg.aws_iam_role.this[0]: Refreshing state... [id=application-asg-20250902172544114000000001]
+data.aws_ami.ubuntu: Read complete after 2s [id=ami-0cfde0ea8edd312d4]
+module.application_asg.aws_iam_role_policy_attachment.this["AmazonSSMManagedInstanceCore"]: Refreshing state... [id=application-asg-20250902172544114000000001/arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore]
+module.application_asg.aws_iam_instance_profile.this[0]: Refreshing state... [id=application-asg-20250902172545162800000002]
+module.vpc.aws_default_route_table.default[0]: Refreshing state... [id=rtb-01ba0d03077f4c3c9]
+module.vpc.aws_default_security_group.this[0]: Refreshing state... [id=sg-0a264e163c14211bc]
+module.vpc.aws_internet_gateway.this[0]: Refreshing state... [id=igw-0d3506320a14f99f6]
+module.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-06d7342b21af36fc5]
+module.management-sg.module.sg.aws_security_group.this_name_prefix[0]: Refreshing state... [id=sg-0f52bcbacc8aa845b]
+module.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-07df10fcc22bdeb69]
+module.application-http-sg.module.sg.aws_security_group.this_name_prefix[0]: Refreshing state... [id=sg-06fcb338218f9c138]
+module.vpc.aws_route_table.public[0]: Refreshing state... [id=rtb-0a3fca95130b73676]
+module.vpc.aws_vpn_gateway.this[0]: Refreshing state... [id=vgw-08804b0e0e90c454e]
+module.application-ssh-sg.module.sg.aws_security_group.this_name_prefix[0]: Refreshing state... [id=sg-0832d3e878c9003da]
+module.vpc.aws_default_network_acl.this[0]: Refreshing state... [id=acl-0404a91504a9f736e]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-037487399f1cc6e38]
+module.vpc.aws_subnet.public[2]: Refreshing state... [id=subnet-0afab845cf5d50b8a]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0bd97b9b10284f19d]
+module.vpc.aws_route_table.private[2]: Refreshing state... [id=rtb-0ed4a5ea9bb78be39]
+module.vpc.aws_route_table.private[1]: Refreshing state... [id=rtb-0c10910bbd49e03cf]
+module.vpc.aws_route_table.private[0]: Refreshing state... [id=rtb-022ccdf1a10817bb4]
+module.vpc.aws_eip.nat[2]: Refreshing state... [id=eipalloc-0e518196bc7fda191]
+module.vpc.aws_eip.nat[0]: Refreshing state... [id=eipalloc-0a12bbf3c61f4f39c]
+module.vpc.aws_eip.nat[1]: Refreshing state... [id=eipalloc-09e474ef5a12d90d1]
+module.vpc.aws_route.public_internet_gateway[0]: Refreshing state... [id=r-rtb-0a3fca95130b736761080289494]
+module.management-sg.module.sg.aws_security_group_rule.ingress_rules[0]: Refreshing state... [id=sgrule-2108133827]
+module.management-sg.module.sg.aws_security_group_rule.ingress_with_self[0]: Refreshing state... [id=sgrule-4119914519]
+module.management-sg.module.sg.aws_security_group_rule.egress_rules[0]: Refreshing state... [id=sgrule-3652509872]
+module.application-ssh-sg.module.sg.aws_security_group_rule.ingress_with_self[0]: Refreshing state... [id=sgrule-3708143996]
+module.application-ssh-sg.module.sg.aws_security_group_rule.egress_rules[0]: Refreshing state... [id=sgrule-3296745609]
+module.application-http-sg.module.sg.aws_security_group_rule.egress_rules[0]: Refreshing state... [id=sgrule-1331921637]
+module.application-http-sg.module.sg.aws_security_group_rule.ingress_with_self[0]: Refreshing state... [id=sgrule-3901905036]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0d47e57b3fb2b67fe]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0c50f3176ac8f8e5d]
+module.vpc.aws_route_table_association.public[2]: Refreshing state... [id=rtbassoc-02cbbca3d2f8eb918]
+module.vpc.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-03536ff5a402fad70]
+module.vpc.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-00077b9bb620b1773]
+module.application_asg.aws_launch_template.this[0]: Refreshing state... [id=lt-0aa30eccb48c44d6e]
+module.bastion_ec2_instance.data.aws_subnet.this[0]: Reading...
+module.vpc.aws_nat_gateway.this[0]: Refreshing state... [id=nat-02492ade466c5ff19]
+module.vpc.aws_nat_gateway.this[1]: Refreshing state... [id=nat-0d0891b33dc3e89ae]
+module.bastion_ec2_instance.data.aws_subnet.this[0]: Read complete after 0s [id=subnet-0bd97b9b10284f19d]
+module.vpc.aws_nat_gateway.this[2]: Refreshing state... [id=nat-08833afba03f3d468]
+module.application-ssh-sg.module.sg.aws_security_group_rule.ingress_rules[0]: Refreshing state... [id=sgrule-3880619564]
+module.application-http-sg.module.sg.aws_security_group_rule.ingress_rules[0]: Refreshing state... [id=sgrule-2947292744]
+module.bastion_ec2_instance.aws_security_group.this[0]: Refreshing state... [id=sg-065f63d5258b09aed]
+module.vpc.aws_route.private_nat_gateway[0]: Refreshing state... [id=r-rtb-022ccdf1a10817bb41080289494]
+module.vpc.aws_route.private_nat_gateway[1]: Refreshing state... [id=r-rtb-0c10910bbd49e03cf1080289494]
+module.vpc.aws_route.private_nat_gateway[2]: Refreshing state... [id=r-rtb-0ed4a5ea9bb78be391080289494]
+module.bastion_ec2_instance.aws_vpc_security_group_egress_rule.this["ipv6_default"]: Refreshing state... [id=sgr-07945dc675573e10b]
+module.bastion_ec2_instance.aws_vpc_security_group_egress_rule.this["ipv4_default"]: Refreshing state... [id=sgr-0c5b19f08670a09fe]
+module.bastion_ec2_instance.aws_instance.this[0]: Refreshing state... [id=i-0b531f7e2862801bc]
+module.application_asg.aws_autoscaling_group.this[0]: Refreshing state... [id=application-asg-20250902172606146400000011]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+bastion_hostname = "ec2-3-135-246-64.us-east-2.compute.amazonaws.com"
+📦 dberner@coalfire :) [main] challenge-dberner]$ ssh -i ../.ssh/dberner-coalfire-sre-challenge-key.pem ubuntu@ec2-3-135-246-64.us-east-2.compute.amazonaws.com uptime
+ 16:19:25 up 22:53,  1 user,  load average: 0.00, 0.00, 0.00
+📦 dberner@coalfire :) [main] challenge-dberner]$ 

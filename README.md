@@ -1,7 +1,6 @@
 # Coalfire SRE AWS Technical Challenge
 
-
-## Site Overview
+# Site Overview
 
 The diagram below represents the site as initially planned. Unfortunately, the Terraform code doesn't currently fully apply, so **the diagrammed ALB is not currently deployable.**
 
@@ -9,16 +8,16 @@ The diagram presents a single VPC spanning 2 Availability Zones. Each AZ hosts p
 
 ![](challenge-diagram.png)
 
-## Deployment
+# Deployment
 
-### Prerequisites
+## Prerequisites
 
 - An AWS account 
 - A workstation configured with Terraform & appropriate credentials to deploy to AWS
 
 Consult the appropriate documentation from [Amazon](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html) and [Hashicorp](https://developer.hashicorp.com/terraform/tutorials/aws-get-started) for setup instructions.
 
-### Deployment instructions
+## Deployment instructions
 
 1. Clone the code repository: [https://github.com/dberner/challenge-dberner](https://github.com/dberner/challenge-dberner)
 ```
@@ -39,45 +38,45 @@ terraform destroy
 ```
 
 
-## Discussion
+# Discussion
 
-### Design
+## Design
 
 I planned to follow the specification as closely as possible and set up a bare bones site with 3 instances in 2 AZs, with appropriate visibility to the Internet and subnet allocations as described.
 
 Once a basic site was deployed I'd planned to install a simple app and then provide whatever storage and backend was required for it. A minimum viable app would need a single S3 storage bucket and a simple database, perhaps on another instance or using an AWS service.
 
-### Assumptions
+## Assumptions
 
 1. A basic HTTP site
 1. No logging, monitoring, or autoscaling
 1. Terraform deploys all resources
 1. Use a generic public AMI
 
-### Improvement plan
+## Improvement plan
 
 In priority order.  Dynamic autoscaling is a nice-to-have and not strictly necessary.
 
-#### 1. Finish the basic site
+### 1. Finish the basic site
 The first step in improvement would be to get the site working as planned. Finish the ALB deployment and configuration, get Apache installed and running on the Application instances.
 
-#### 2. Install the app and supporting AWS resources
+### 2. Install the app and supporting AWS resources
 Next, complete the initial plan by installing a simple app and whatever backend resources required for its function.
 
-#### 3. Logging, monitoring, and alerting
+### 3. Logging, monitoring, and alerting
 Set up Cloudwatch logging, metrics, and alerting or deploy nagios or similar tools to DIY it.
 
-#### 4. DNS, and SSL/TLS
+### 4. DNS, and SSL/TLS
 Set up a DNS name for the site. Once the site has a name, we can create SSL/TLS certificates and enable HTTPS on the ALB.
 
-#### 5. Dynamic Autoscaling
+### 5. Dynamic Autoscaling
 The ASG is not set up to respond to traffic needs at this point. Set up dynamic autoscaling.
 
-### General Notes
+## General Notes
 
-Approaching this challenge, my first task was to get a development environment set up for the project. I set up a distrobox to create a clean workspace on my system, installed basic tools into it, created an AWS account, installed the AWS CLI, set up my AWS credentials, installed Terraform, created a ssh key for pushing to github, and made sure everything was working correctly so I could get working. 
+Approaching this challenge, my first task was to get a development environment set up for the project. I created a distrobox to provide a clean workspace on my system, installed basic tools into it, created an AWS account, installed the AWS CLI, set up my AWS credentials, installed Terraform, created a ssh key for pushing to github, and made sure everything was working correctly. All subsequent work was done in the distrobox environment.
 
-To begin the actual work, I looked at Coalfire's AWS Terraform modules. I started writing code with these, but eventually realized I wouldn't be able to understand them well enough to fully implement the project in the time available for the challenge. This code is available in the `coalfire-terraform-attempt` subdirectory.
+To begin the actual work, I looked at Coalfire's AWS Terraform modules. I started writing code with these, but eventually realized I wouldn't be able to understand them well enough to fully implement the project in the time available for the challenge. (This code is available in the `coalfire-terraform-attempt` subdirectory.)
 
 The top Google search result for AWS Terraform modules is [Terraform AWS Modules](https://registry.terraform.io/namespaces/terraform-aws-modules), this seemed to me a reasonably strong endorsement. These modules have comprehensible example code and looked like they would work for my initial implementation plan - there are modules for handling VPC, Security Groups, EC2 Instances, ASG, and ALB.
 
@@ -93,9 +92,9 @@ It seems like ASGs are not well supported by this module author, as my next step
 
 I've commented out the ALB code in the current main.tf. It was previously running but I wanted to leave the target group code in place for future experimentation.
 
-## References
+# References
 
-### terraform-aws-modules
+## terraform-aws-modules
 The modules used from the [Terraform AWS Modules](https://registry.terraform.io/namespaces/terraform-aws-modules) collection:
 - [vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
 - [security-group](https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/latest)
@@ -107,7 +106,7 @@ Code examples from above:
 - [ASG examples the autoscaling module](https://github.com/terraform-aws-modules/terraform-aws-autoscaling/tree/master/examples/complete)
 - [ALB examples from the alb module](https://github.com/terraform-aws-modules/terraform-aws-alb/blob/master/docs/patterns.md)
 
-### AWS documentation consulted
+## AWS documentation consulted
 
 - [Guide about VPC & subnetting](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html)
 - [Documentation on ALB subnets and routing](https://docs.aws.amazon.com/prescriptive-guidance/latest/load-balancer-stickiness/subnets-routing.html)
@@ -118,7 +117,7 @@ Code examples from above:
 - [Documentation about instance user data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html)
 - [Tutorial for setting up ASG and LB](https://docs.aws.amazon.com/autoscaling/ec2/userguide/tutorial-ec2-auto-scaling-load-balancer.html)
 
-### Other resources consulted
+## Other resources consulted
 - [reddit post](https://www.reddit.com/r/Terraform/comments/1kkx9jb/help_associating_asg_with_alb_target_group_using/) about target group problems with ASG and ALB
 - [example code on traffic source attachment](https://github.com/terraform-aws-modules/terraform-aws-autoscaling/blob/d2975372e3c6530aade7797063c67dab9d0315d8/examples/complete/main.tf#L52) referenced by above
 - Hashicorp's AWS provider documentation on [autoscaling traffic source attachments](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_traffic_source_attachment)
