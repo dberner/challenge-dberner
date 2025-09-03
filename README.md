@@ -118,6 +118,10 @@ The [deployment-evidence](Documentation/deployment-evidence/) subdirectory conta
 
 There is also a log of the terraform apply process with a demonstration of connecting to the bastion EC2 instance via SSH.
 
+# Runbook
+
+The ops runbook for the site is in the [Documentation](Documentation) subdirectory: [here](Documentation/runbook.md)
+
 # References
 
 ## terraform-aws-modules
