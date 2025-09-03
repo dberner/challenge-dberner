@@ -69,13 +69,16 @@ Set up Cloudwatch logging, metrics, and alerting or deploy nagios or similar too
 ### 4. DNS, and SSL/TLS
 Set up a DNS name for the site. Once the site has a name, we can create SSL/TLS certificates and enable HTTPS on the ALB.
 
-### 5. A custom AMI for the app servers
+### 5. Operational improvements
+See the [Operational gaps](#Operational gaps) section below.
+
+### 6. A custom AMI for the app servers
 Simplify app deployment by generating a custom AMI with the application and configuration pre-installed.
 
-### 6. Dynamic Autoscaling
+### 7. Dynamic Autoscaling
 The ASG is not set up to respond to traffic needs at this point. Set up dynamic autoscaling.
 
-## General Notes
+## General notes
 
 Approaching this challenge, my first task was to get a development environment set up for the project. I created a distrobox to provide a clean workspace on my system, installed basic tools into it, created an AWS account, installed the AWS CLI, set up my AWS credentials, installed Terraform, created a ssh key for pushing to github, and made sure everything was working correctly. All subsequent work was done in the distrobox environment.
 
@@ -87,15 +90,18 @@ I started by deploying the VPC and network configuraton. This was straightforwar
 
 Encouraged by this, I started working on the ASG. First by adding another security group, for ssh to the ASG instances from the bastion instance, then setting up the ASG itself and deploying a couple of instances into the application subnets. This was less straigthforward for me, I haven't worked with ASG on AWS before, and had to read up on concepts, and I fought with Terraform syntax, resource names, and module outputs. Once I had it deploying I was able to test hopping through the bastion into the ASG instances.
 
-Next, I started working on the ALB. Unfortunately I ran into a roadblock with the [Terraform AWS Modules ALB module](https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/latest). I was able to deploy an ALB but not attach it to the ASG. The ALB module doesn't document ASG targets. I tried passing the exported ARN and IDs from the ASG module to the ALB, and found a Reddit thread discussing this problem with these modules, which suggested a change to the ASG was needed as well, but I wasn't able to get a working deployment. At this point I'd run out of time.
+Next, I started working on the ALB. Unfortunately I ran into a roadblock with the [Terraform AWS Modules ALB module](https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/latest). I was able to deploy an ALB but not attach it to the ASG. The ALB module doesn't document ASG targets. I tried passing the exported ARN and IDs from the ASG module to the ALB, and found a [Reddit thread](https://www.reddit.com/r/Terraform/comments/1kkx9jb/help_associating_asg_with_alb_target_group_using/) discussing this problem with these modules, which suggested a change to the ASG was needed as well, but I wasn't able to get a working deployment. At this point I'd run out of time.
 
 Given more time I'd work on implementing the ALB via Hashicorp's AWS provider resources directly, but getting this far has already exceeded my time budget for the project, given my inexperience with AWS and Terraform.
 
 It seems like ASGs are not well supported by this module author, as my next step was to install apache on the ASG instances. I'd thought this would be a simple matter of passing a bash script to the instances, but I found the `user_data` input in the ASG module configuration doesn't seem run the provided bash script on the instances. Again, given more time I'd approach this by writing with Hashicorp's provider resources rather than the abstractions provided by the chosen modules.
 
-I've commented out the ALB code in the current main.tf. It was previously running but I wanted to leave the target group code in place for future experimentation.
+> [!NOTE]
+> I've commented out the ALB code in the current main.tf. It was deploying before I made changes to the target group inputs but I wanted to leave the target group code in place for future experimentation.
 
-## Deployment logs and screenshots
+## Operational Gaps
+
+# Deployment logs and screenshots
 The [deployment-evidence](./deployment-evidence/) subdirectory contains screenshots of the AWS console showing
 - the VPC and subnets 
 - the running EC2 instances
