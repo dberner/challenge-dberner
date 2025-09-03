@@ -17,7 +17,8 @@ terraform apply
 
 ## Connecting to the bastion
 
-1. Collect the hostname of the bastion instance
+1. Collect the hostname of the bastion instance:
+
 `aws ec2 describe-instances | grep PublicDnsName`
 
 Example output:
@@ -38,7 +39,8 @@ ssh -i <path_to_ssh_key> ubuntu@<public_dns_name>
 
 ## Connecting to application instances
 
-1. Collect the IP addresss of of the application instances
+1. Collect the IP addresss of of the application instances:
+
 `for i in $(aws autoscaling describe-auto-scaling-instances | grep InstanceId | cut -d'"' -f4); do aws ec2 describe-instances --instance-ids $i | grep 'PrivateIpAddress":'; done`
 
 Example output:
