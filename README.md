@@ -11,7 +11,17 @@ The diagram below represents the site as initially planned. Unfortunately, the T
 
 First, I looked at Coalfire's AWS Terraform modules, I started writing code with these but quickly realized I wouldn't be able to understand them enough to fully implement in the time available for the challenge.
 
-The top Google search result for AWS Terraform modules is [Terraform AWS Modules](https://registry.terraform.io/namespaces/terraform-aws-modules), this seemed to be a strong endorsement. These modules have reasonably comprehensible example code and looked like they'd work for my my implementation plan: modules handling VPC, Security Groups, EC2 Instances, ASG, and ALB.
+The top Google search result for AWS Terraform modules is [Terraform AWS Modules](https://registry.terraform.io/namespaces/terraform-aws-modules), this seemed to be a strong endorsement. These modules have reasonably comprehensible example code and looked like they'd work for my implementation plan: there are modules for handling VPC, Security Groups, EC2 Instances, ASG, and ALB.
+
+I started by deploying the VPC and network configuraton. This was straightforward. The security group for the management subnet was next, then the management EC2 instance. After these were deployed I successfully tested connecting to the bastion instance via SSH.
+
+Encouraged by this, I started working on the ASG. First by adding another security group for ssh to the ASG instances from the bastion instance, then  setting up the ASG itself and deploying a couple of instances into the application subnets. This was less straigthforward for me, and I fought with syntax, resource names, and module outputs. Once I had it deploying I was able to test hopping through the bastion into the ASG instances.
+
+Next, I started working on the ALB. Unfortunately I ran into a roadblock with the [Terraform AWS Modules ALB module](https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/latest). I was able to deploy an ALB but not attach it to the ASG. The ALB module example code doesn't document ASG targets. Given more time I'd work on implementing the ALB via Hashicorp's AWS provider resources directly, but getting this far has already exceeded my time budget for the project, given my inexperience with AWS and Terraform.
+
+It seems like ASGs are not well supported by this module author, my next step was to install apache on the ASG instances, but I found the `user_data` input in the ASG module configuration doesn't seem run the provided bash script on the instances. Again, given more time I'd approach this by writing directly with Hashicorp's provider resources directly.
+
+I've commented out the ALB code in the current main.tf. It was previously running but I wanted to leave the target group code in place for future experimentation.
 
 ## References
 
