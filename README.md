@@ -6,7 +6,7 @@ The diagram below represents the site as initially planned. Unfortunately, the T
 
 The diagram presents a single VPC spanning 2 Availability Zones. Each AZ hosts public and private subnets. A public Management subnet for the bastion EC2 instance exists in only one AZ. Both AZs contain a public subnet for an ALB listener, and a private subnet for ASG instances. An Internet Gateway allows traffic to and from the Internet into the VPC. Traffic can pass from the IG to the bastion instance, and to the ALB. The ALB passes traffic to Listeners which pass traffic to the ASG instances in their private subnets. (Access via SSH from the bastion to the ASG instances is not pictured.)
 
-![](challenge-diagram.png)
+![](Documentation/challenge-diagram.png)
 
 # Deployment
 
@@ -61,16 +61,16 @@ In priority order. The custom AMI and dynamic autoscaling are nice-to-have and n
 The first step in improvement would be to get the site working as planned. Finish the ALB deployment and configuration, get Apache installed and running on the Application instances.
 
 ### 2. Install the app and supporting AWS resources
-Next, complete the initial plan by installing a simple app and whatever backend resources required for its function.
+Next, complete the initial plan by installing a simple app and the backend resources required for its function.
 
 ### 3. Logging, monitoring, and alerting
-Set up Cloudwatch logging, metrics, and alerting or deploy nagios or similar tools to DIY it.
+Set up Cloudwatch logging, metrics, and alerting or deploy Nagios or similar tools to DIY it. DYI might be cheaper, but will be more development and ongoing effort.
 
 ### 4. DNS, and SSL/TLS
-Set up a DNS name for the site. Once the site has a name, we can create SSL/TLS certificates and enable HTTPS on the ALB.
+Set up a DNS name for the site. Once the site has a name, we can create SSL/TLS certificates and enable HTTPS on the ALB. This is a security priority and a basic expectation of the modern web.
 
 ### 5. Operational improvements
-See the [Operational gaps](#Operational gaps) section below.
+See the [Operational gaps](#operational-gaps) section below.
 
 ### 6. A custom AMI for the app servers
 Simplify app deployment by generating a custom AMI with the application and configuration pre-installed.
@@ -102,7 +102,7 @@ It seems like ASGs are not well supported by this module author, as my next step
 ## Operational Gaps
 
 # Deployment logs and screenshots
-The [deployment-evidence](./deployment-evidence/) subdirectory contains screenshots of the AWS console showing
+The [deployment-evidence](Documentation/deployment-evidence/) subdirectory contains screenshots of the AWS console showing
 - the VPC and subnets 
 - the running EC2 instances
 - details of the ASG
