@@ -101,6 +101,15 @@ It seems like ASGs are not well supported by this module author, as my next step
 
 ## Operational Gaps
 
+1. SSH access to bastion and app servers
+  - There is only one shared account and ssh key to log into the bastion
+    - Set up a system to handle multiple users and keys, perhaps leveraging AWS Secrets Manager
+  - Connecting to the app servers requires a manual hop through the bastion
+    - Deploy users and ssh keys to the bastion allowing ProxyJump configuration to directly access nodes via the bastion.
+
+2. Monitoring, metrics, and alerting
+  - These don't currently exist, reference item 3 in the [Improvement plan](#improvement-plan)
+
 # Deployment logs and screenshots
 The [deployment-evidence](Documentation/deployment-evidence/) subdirectory contains screenshots of the AWS console showing
 - the VPC and subnets 
